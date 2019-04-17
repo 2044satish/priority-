@@ -1,0 +1,62 @@
+#include<stdio.h>
+#include<conio.h>
+int main()
+{
+int Bs_T[7],Process_no[7],Wait_T[7],Trn_Ard_T[7];
+int Arr_T[15],Prior[15],a,b,Number_of_Process,Tot=0,p,temp,Avg_Wait_T,Avg_Trn_Ard_T;
+printf("Enter Number of Process:");
+scanf("%d",&Number_of_Process);
+printf("\nEnter Burst Time and Prior\n");
+for(a=0;a<Number_of_Process;a++)
+{
+printf("\nP[%d]\n",(a+1));
+printf("Enter Burst Time:");
+scanf("%d",&Bs_T[a]);
+printf("Enter Arrival Time:");
+scanf("%d",&Arr_T[a]);
+printf("Enter Prior:");
+scanf("%d",&Prior[a]);
+Process_no[a]=a+1;
+}
+for(a=0;a<Number_of_Process;a++)
+{
+p=a;
+for(b=a+1;b<Number_of_Process;b++)
+{
+if(Prior[b]<Prior[p])
+p=b;
+}
+temp=Prior[a];
+Prior[a]=Prior[p];
+Prior[p]=temp;
+temp=Bs_T[a];
+Bs_T[a]=Bs_T[p];
+Bs_T[p]=temp;
+temp=Process_no[a];
+Process_no[a]=Process_no[p];
+Process_no[p]=temp;
+}
+Wait_T[0]=0;
+for(a=1;a<Number_of_Process;a++)
+{
+Wait_T[a]=0;
+for(b=0;b<a;b++)
+Wait_T[a]+=Bs_T[b];
+Tot+=Wait_T[a];
+}
+Avg_Wait_T=Tot/Number_of_Process;
+Tot=0;
+printf("");
+printf("\nProcess\t B T W T T A T");
+for(a=0;a<Number_of_Process;a++)
+{
+Trn_Ard_T[a]=Bs_T[a]+Wait_T[a];
+Tot+=Trn_Ard_T[a];
+printf("\nProcess %d \t %d\t \t %d\t\t%d",Process_no[a],Bs_T[a],Wait_T[a],Trn_Ard_T[a]);
+}
+printf("\n");
+Avg_Trn_Ard_T=Tot/Number_of_Process;
+printf("\n\nAvg W T= %d",Avg_Wait_T);
+printf("\nAvg T A T= %d",Avg_Trn_Ard_T);
+return 0;
+}
